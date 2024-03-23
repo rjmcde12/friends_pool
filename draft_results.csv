@@ -1,0 +1,65 @@
+friend,team,seed,round,overall
+Defran,Houston,1,5,40
+Defran,North Carolina,1,6,41
+Tris,Purdue,1,6,43
+Tris,UConn,1,5,38
+Tris,Arizona,2,2,11
+Seen,Iowa St.,2,3,18
+Lynch,Marquette,2,2,13
+Defran,Tennessee,2,3,24
+Wisbach,Baylor,3,1,5
+Alex,Creighton,3,1,3
+Defran,Illinois,3,1,8
+McWelch,Kentucky,3,1,1
+Gary,Alabama,4,1,7
+Seen,Auburn,4,1,2
+Tris,Duke,4,1,6
+Tris,Kansas,4,4,27
+Defran,Gonzaga,5,2,9
+Wisbach,Saint Mary's (CA),5,2,12
+McWelch,San Diego St.,5,6,48
+Defran,Wisconsin,5,4,25
+Lynch,BYU,6,1,4
+Alex,Clemson,6,5,35
+Seen,South Carolina,6,5,34
+McWelch,Texas Tech,6,4,32
+Gary,Dayton,7,6,42
+Alex,Florida,7,3,19
+Seen,Texas,7,4,31
+Wisbach,Washington St.,7,5,37
+Lynch,Fla. Atlantic,8,5,36
+Tris,Mississippi St.,8,3,22
+Alex,Nebraska,8,4,30
+McWelch,Utah St.,8,7,49
+Wisbach,Michigan St.,9,3,21
+Gary,Northwestern,9,5,39
+Wisbach,TCU,9,4,28
+Gary,Texas A&M,9,4,26
+McWelch,Colorado,10,5,33
+McWelch,Colorado St.,10,2,16
+Gary,Drake,10,3,23
+Lynch,Nevada,10,4,29
+Seen,Duquesne,11,6,47
+Lynch,NC State,11,3,20
+McWelch,New Mexico,11,3,17
+Seen,Oregon,11,2,15
+Gary,Grand Canyon,12,2,10
+Alex,James Madison,12,2,14
+Wisbach,McNeese,12,6,44
+Lynch,UAB,12,7,52
+Wisbach,Col. of Charleston,13,7,53
+Lynch,Samford,13,6,45
+Defran,Vermont,13,7,56
+Tris,Yale,13,7,54
+Defran,Akron,14,8,57
+Tris,Colgate,14,8,59
+Alex,Morehead St.,14,7,51
+Gary,Oakland,14,8,58
+Alex,Long Beach St.,15,6,46
+Seen,Saint Peter's,15,7,50
+Gary,South Dakota St.,15,7,55
+Wisbach,Western Ky.,15,8,60
+Alex,Grambling,16,8,62
+Seen,Longwood,16,8,63
+McWelch,Stetson,16,8,64
+Lynch,Wagner,16,8,61
