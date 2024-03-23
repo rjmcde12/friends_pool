@@ -276,5 +276,5 @@ final_results_to_google = final_results_df.values.tolist()
 final_results_google.update(range_name='A2', values=final_results_to_google)
 
 if __name__ == '__main__':
-    # app.run_server(debug=True)
-    app.run_server(debug=True, port=8051)
+     app.run_server(debug=True)
+#    app.run_server(debug=True, port=8051)
