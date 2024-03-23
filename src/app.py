@@ -260,7 +260,7 @@ def table_shown(tab_chosen):
         id='table',
         columns=[{"name": i, "id": i} for i in table_df.columns],
         data=table_df.to_dict('records'),
-        page_size=15
+        page_size=15,
         style_table={'overflowX': 'auto'},
         style_data={'whiteSpace': 'normal', 'height': 'auto'},
         filter_action='native',  # Enables column filtering
