@@ -222,8 +222,9 @@ friend_standings = create_friend_standings(draft_df, team_standings)
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])
 server = app.server
 
-app.layout = html.Div([
-    html.H1('Friends* Standings', style={'textAlign':'center'}),
+app.layout = html.Div(className='dbc', children=[
+    dbc.Container(children = [
+    html.H1('Friendly* Pool Standings', style={'textAlign':'center'}),
     html.H6(children='*Alexander is obviously not our friend', style={'position': 'absolute', 'bottom': 0, 'left': 0}),
     dbc.Row([
         dbc.Col(
@@ -246,6 +247,7 @@ app.layout = html.Div([
             ],
             width = 8
         )
+    ])
     ])
     
 ])
@@ -280,5 +282,5 @@ final_results_to_google = final_results_df.values.tolist()
 final_results_google.update(range_name='A2', values=final_results_to_google)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-    # app.run_server(debug=True, port=8051)
+     app.run_server(debug=True)
+#    app.run_server(debug=True, port=8051)
