@@ -163,6 +163,7 @@ def create_today_scores_dfs(score_data):
     today_by_team_df = today_by_team_df[today_by_team_df['seed'] !='']
     
     return today_by_game_df, today_by_team_df
+        
 
 
 def update_final_results_df(today_by_team_df, final_results_df):
@@ -196,6 +197,7 @@ def create_team_standings(final_results_df, draft_df):
     return team_standings
 
 
+
 def create_friend_standings(draft_df, team_standings):
     draft_df = draft_df.drop(columns='friend')
     friend_team_results = pd.merge(draft_df, team_standings, on='team')
@@ -223,13 +225,16 @@ server = app.server
 app.layout = html.Div(className='dbc', children=[
     dbc.Container(children = [
     html.H1('Friendly* Pool Standings', style={'textAlign':'center'}),
-    html.Div(children='*Alexander is obviously not our friend', style={'textAlign':'right'}),
+    html.H6(children='*Alexander is obviously not our friend', style={'position': 'absolute', 'bottom': 0, 'left': 0}),
     dbc.Row([
+        dbc.Col(
             dbc.Card(
-                dbc.Table.from_dataframe(friend_standings, striped=True, bordered=True, hover=True,
-                                        style={'size':'auto','overflow':'auto'})
+                dbc.Table.from_dataframe(friend_standings, striped=True, bordered=True, hover=True, style={'width':'auto'})
             ),
-            html.Div(children=[
+            width = 4
+        ),
+        dbc.Col(
+            [
                 dbc.Tabs(
                         [
                             dbc.Tab(label='Game Results', tab_id='game-results'),
@@ -239,7 +244,9 @@ app.layout = html.Div(className='dbc', children=[
                 active_tab='game-results'
             ),
                 html.Div(id='tab-table', style={'size':'auto','overflow':'auto'})
-            ]),
+            ],
+            width = 8
+        )
     ])
     ])
     
@@ -252,7 +259,7 @@ app.layout = html.Div(className='dbc', children=[
 
 def table_shown(tab_chosen):
     if tab_chosen == 'game-results':
-        table_df = final_results_df.iloc[:,:8]
+        table_df = final_results_df
     else:
         table_df = team_standings
 
@@ -260,7 +267,6 @@ def table_shown(tab_chosen):
         id='table',
         columns=[{"name": i, "id": i} for i in table_df.columns],
         data=table_df.to_dict('records'),
-        page_size=15
         style_table={'overflowX': 'auto'},
         style_data={'whiteSpace': 'normal', 'height': 'auto'},
         filter_action='native',  # Enables column filtering
@@ -276,5 +282,5 @@ final_results_to_google = final_results_df.values.tolist()
 final_results_google.update(range_name='A2', values=final_results_to_google)
 
 if __name__ == '__main__':
-    # app.run_server(debug=True)
-    app.run_server(debug=True, port=8051)
+     app.run_server(debug=True)
+#    app.run_server(debug=True, port=8051)
