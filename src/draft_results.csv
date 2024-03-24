@@ -1,65 +1,65 @@
-friend,team,seed,round,overall
-Defran,Houston,1,5,40
-Defran,North Carolina,1,6,41
-Tris,Purdue,1,6,43
-Tris,UConn,1,5,38
-Tris,Arizona,2,2,11
-Seen,Iowa St.,2,3,18
-Lynch,Marquette,2,2,13
-Defran,Tennessee,2,3,24
-Wisbach,Baylor,3,1,5
-Alex,Creighton,3,1,3
-Defran,Illinois,3,1,8
-McWelch,Kentucky,3,1,1
-Gary,Alabama,4,1,7
-Seen,Auburn,4,1,2
-Tris,Duke,4,1,6
-Tris,Kansas,4,4,27
-Defran,Gonzaga,5,2,9
-Wisbach,Saint Mary's (CA),5,2,12
-McWelch,San Diego St.,5,6,48
-Defran,Wisconsin,5,4,25
-Lynch,BYU,6,1,4
-Alex,Clemson,6,5,35
-Seen,South Carolina,6,5,34
-McWelch,Texas Tech,6,4,32
-Gary,Dayton,7,6,42
-Alex,Florida,7,3,19
-Seen,Texas,7,4,31
-Wisbach,Washington St.,7,5,37
-Lynch,Fla. Atlantic,8,5,36
-Tris,Mississippi St.,8,3,22
-Alex,Nebraska,8,4,30
-McWelch,Utah St.,8,7,49
-Wisbach,Michigan St.,9,3,21
-Gary,Northwestern,9,5,39
-Wisbach,TCU,9,4,28
-Gary,Texas A&M,9,4,26
-McWelch,Colorado,10,5,33
-McWelch,Colorado St.,10,2,16
-Gary,Drake,10,3,23
-Lynch,Nevada,10,4,29
-Seen,Duquesne,11,6,47
-Lynch,NC State,11,3,20
-McWelch,New Mexico,11,3,17
-Seen,Oregon,11,2,15
-Gary,Grand Canyon,12,2,10
-Alex,James Madison,12,2,14
-Wisbach,McNeese,12,6,44
-Lynch,UAB,12,7,52
-Wisbach,Col. of Charleston,13,7,53
-Lynch,Samford,13,6,45
-Defran,Vermont,13,7,56
-Tris,Yale,13,7,54
-Defran,Akron,14,8,57
-Tris,Colgate,14,8,59
-Alex,Morehead St.,14,7,51
-Gary,Oakland,14,8,58
-Alex,Long Beach St.,15,6,46
-Seen,Saint Peter's,15,7,50
-Gary,South Dakota St.,15,7,55
-Wisbach,Western Ky.,15,8,60
-Alex,Grambling,16,8,62
-Seen,Longwood,16,8,63
-McWelch,Stetson,16,8,64
-Lynch,Wagner,16,8,61
+team,matchup_id,friend,seed,round,overall,r1,r2,r3,r4,r5,r6
+UConn,e-1-1-1-1-1,Tris,1,5,38,1,2,3,4,5,6
+Iowa St.,e-1-8-4-2-1,Seen,2,3,18,2,4,6,8,10,12
+Illinois,e-1-6-3-2-1,Defran,3,1,8,3,6,9,12,15,18
+Auburn,e-1-4-2-1-1,Seen,4,1,2,4,8,12,16,20,24
+San Diego St.,e-1-3-2-1-1,McWelch,5,6,48,5,10,15,20,25,30
+BYU,e-1-5-3-2-1,Lynch,6,1,4,6,12,18,24,30,36
+Washington St.,e-1-7-4-2-1,Wisbach,7,5,37,7,14,21,28,35,42
+Fla. Atlantic,e-1-2-1-1-1,Lynch,8,5,36,8,16,24,32,40,48
+Northwestern,e-1-2-1-1-1,Gary,9,5,39,9,18,27,36,45,54
+Drake,e-1-7-4-2-1,Gary,10,3,23,10,20,30,40,50,60
+Duquesne,e-1-5-3-2-1,Seen,11,6,47,11,22,33,44,55,66
+UAB,e-1-3-2-1-1,Lynch,12,7,52,12,24,36,48,60,72
+Yale,e-1-4-2-1-1,Tris,13,7,54,13,26,39,52,65,78
+Morehead St.,e-1-6-3-2-1,Alex,14,7,51,14,28,42,56,70,84
+South Dakota St.,e-1-8-4-2-1,Gary,15,7,55,15,30,45,60,75,90
+Stetson,e-1-1-1-1-1,McWelch,16,8,64,16,32,48,64,80,96
+Purdue,mw-2-1-1-1-1,Tris,1,6,43,1,2,3,4,5,6
+Tennessee,mw-2-8-4-2-1,Defran,2,3,24,2,4,6,8,10,12
+Creighton,mw-2-6-3-2-1,Alex,3,1,3,3,6,9,12,15,18
+Kansas,mw-2-4-2-1-1,Tris,4,4,27,4,8,12,16,20,24
+Gonzaga,mw-2-3-2-1-1,Defran,5,2,9,5,10,15,20,25,30
+South Carolina,mw-2-5-3-2-1,Seen,6,5,34,6,12,18,24,30,36
+Texas,mw-2-7-4-2-1,Seen,7,4,31,7,14,21,28,35,42
+Utah St.,mw-2-2-1-1-1,McWelch,8,7,49,8,16,24,32,40,48
+TCU,mw-2-2-1-1-1,Wisbach,9,4,28,9,18,27,36,45,54
+Colorado St.,mw-2-7-4-2-1,McWelch,10,2,16,10,20,30,40,50,60
+Oregon,mw-2-5-3-2-1,Seen,11,2,15,11,22,33,44,55,66
+McNeese,mw-2-3-2-1-1,Wisbach,12,6,44,12,24,36,48,60,72
+Samford,mw-2-4-2-1-1,Lynch,13,6,45,13,26,39,52,65,78
+Akron,mw-2-6-3-2-1,Defran,14,8,57,14,28,42,56,70,84
+Saint Peter's,mw-2-8-4-2-1,Seen,15,7,50,15,30,45,60,75,90
+Grambling,mw-2-1-1-1-1,Alex,16,8,62,16,32,48,64,80,96
+Houston,s-2-1-1-1-1,Defran,1,5,40,1,2,3,4,5,6
+Marquette,s-2-8-4-2-1,Lynch,2,2,13,2,4,6,8,10,12
+Kentucky,s-2-6-3-2-1,McWelch,3,1,1,3,6,9,12,15,18
+Duke,s-2-4-2-1-1,Tris,4,1,6,4,8,12,16,20,24
+Wisconsin,s-2-3-2-1-1,Defran,5,4,25,5,10,15,20,25,30
+Texas Tech,s-2-5-3-2-1,McWelch,6,4,32,6,12,18,24,30,36
+Florida,s-2-7-4-2-1,Alex,7,3,19,7,14,21,28,35,42
+Nebraska,s-2-2-1-1-1,Alex,8,4,30,8,16,24,32,40,48
+Texas A&M,s-2-2-1-1-1,Gary,9,4,26,9,18,27,36,45,54
+Colorado,s-2-7-4-2-1,McWelch,10,5,33,10,20,30,40,50,60
+NC State,s-2-5-3-2-1,Lynch,11,3,20,11,22,33,44,55,66
+James Madison,s-2-3-2-1-1,Alex,12,2,14,12,24,36,48,60,72
+Vermont,s-2-4-2-1-1,Defran,13,7,56,13,26,39,52,65,78
+Oakland,s-2-6-3-2-1,Gary,14,8,58,14,28,42,56,70,84
+Western Ky.,s-2-8-4-2-1,Wisbach,15,8,60,15,30,45,60,75,90
+Longwood,s-2-1-1-1-1,Seen,16,8,63,16,32,48,64,80,96
+North Carolina,w-1-1-1-1-1,Defran,1,6,41,1,2,3,4,5,6
+Arizona,w-1-8-4-2-1,Tris,2,2,11,2,4,6,8,10,12
+Baylor,w-1-6-3-2-1,Wisbach,3,1,5,3,6,9,12,15,18
+Alabama,w-1-4-2-1-1,Gary,4,1,7,4,8,12,16,20,24
+Saint Mary's (CA),w-1-3-2-1-1,Wisbach,5,2,12,5,10,15,20,25,30
+Clemson,w-1-5-3-2-1,Alex,6,5,35,6,12,18,24,30,36
+Dayton,w-1-7-4-2-1,Gary,7,6,42,7,14,21,28,35,42
+Mississippi St.,w-1-2-1-1-1,Tris,8,3,22,8,16,24,32,40,48
+Michigan St.,w-1-2-1-1-1,Wisbach,9,3,21,9,18,27,36,45,54
+Nevada,w-1-7-4-2-1,Lynch,10,4,29,10,20,30,40,50,60
+New Mexico,w-1-5-3-2-1,McWelch,11,3,17,11,22,33,44,55,66
+Grand Canyon,w-1-3-2-1-1,Gary,12,2,10,12,24,36,48,60,72
+Col. of Charleston,w-1-4-2-1-1,Wisbach,13,7,53,13,26,39,52,65,78
+Colgate,w-1-6-3-2-1,Tris,14,8,59,14,28,42,56,70,84
+Long Beach St.,w-1-8-4-2-1,Alex,15,6,46,15,30,45,60,75,90
+Wagner,w-1-1-1-1-1,Lynch,16,8,61,16,32,48,64,80,96
