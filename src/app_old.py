@@ -196,25 +196,79 @@ def create_team_standings(final_results_df, draft_df):
     return team_standings
 
 
-def create_friend_standings(draft_df, team_standings):
+def create_friend_standings(draft_df, team_standings, pts_left):
     draft_df = draft_df.drop(columns='friend')
     friend_team_results = pd.merge(draft_df, team_standings, on='team')
     friend_team_results.loc[:,'pool_points'] = friend_team_results['pool_points'].astype(int)
-    friend_standings = pd.DataFrame(friend_team_results.groupby('friend')['pool_points'].sum())
+    friend_team_results.loc[:,'eliminated'] = friend_team_results['eliminated'].astype(int)
+    friend_standings = pd.DataFrame(friend_team_results.groupby('friend')[['pool_points', 'eliminated']].sum())
+    friend_standings['Teams Left'] = 8 - friend_standings['eliminated']
+    friend_standings.drop(columns='eliminated', inplace=True)
     friend_standings.loc[:,'pool_points'] = friend_standings['pool_points'].astype(int)
-    friend_standings.sort_values(by='pool_points', ascending=False, inplace=True)
-    friend_standings.reset_index(inplace=True)
+    friend_standings = pd.merge(friend_standings, pts_left, on='friend')
+    friend_standings['pts_left'] = friend_standings['pts_left'] + friend_standings['pool_points']
+    friend_standings.sort_values(by=['pool_points', 'pts_left'], ascending=False, inplace=True)
+    friend_standings.reset_index(drop=True, inplace=True)
     friend_standings.index = friend_standings.index + 1
-    friend_standings.index.name = 'place'
+    friend_standings.index.name = 'Place'
+    friend_standings = friend_standings.rename(columns = {'pool_points':'Total Points', 'friend':'Friend*', 'pts_left':'Max Points'})
     friend_standings.reset_index(inplace=True)
     return friend_standings
+
+
+def create_pts_left_df(final_results_df, draft_df):
+    team_last_round = final_results_df.groupby('team').agg({'round':'max','pool_points':'sum'}).reset_index()
+    possible_points = pd.merge(draft_df, team_last_round, on='team')
+    possible_points.drop(columns='round_x', inplace=True)
+    possible_points.rename(columns={'round_y':'round'}, inplace=True)
+    eliminated = team_standings[['team', 'eliminated']]
+    possible_points = pd.merge(possible_points, eliminated, on='team')
+    
+    friends_list = draft_df['friend'].unique().tolist()
+    pts_left_list = []
+    for friend in friends_list:
+        poss_pts = possible_points[possible_points['friend']==friend].reset_index(drop=True)
+        poss_pts = poss_pts[poss_pts['eliminated']==False]
+        if len(poss_pts) != 0:
+            max_round = poss_pts['round'].max()
+            rounds_left = list(range(max(max_round-1, 1), 7))
+            r1_pts = r2_pts = r3_pts = r4_pts = r5_pts = r6_pts = 0
+            for round in rounds_left:
+                if round == 1:
+                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-6])['r1'].max()
+                    r1_pts = poss_pts['r1'].sum()
+                elif round == 2:
+                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-4])['r2'].max()
+                    r2_pts = poss_pts['r2'].sum()
+                elif round == 3:
+                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-2])['r3'].max()
+                    r3_pts = poss_pts['r3'].sum()
+                elif round == 4:
+                    rd_df = poss_pts.groupby(poss_pts['matchup_id'])['r4'].max()
+                    r4_pts = poss_pts['r4'].sum()
+                elif round == 5:
+                    rd_df = poss_pts.groupby(poss_pts['matchup_id'])['r5'].max()
+                    r5_pts = poss_pts['r5'].sum()
+                elif round == 6:
+                    r6_pts = poss_pts['r6'].max()
+            
+            pts_left = r1_pts + r2_pts + r3_pts + r4_pts + r5_pts + r6_pts
+            
+            pts_left_dict = {'friend':friend, 'pts_left':pts_left}
+            
+        pts_left_list.append(pts_left_dict)
+            
+    pts_left_df = pd.DataFrame(pts_left_list)
+    return pts_left_df
+
 
 
 score_data = pull_today_scores()
 today_by_game_df, today_by_team_df = create_today_scores_dfs(score_data)
 final_results_df = update_final_results_df(today_by_team_df, final_results_df)
 team_standings = create_team_standings(final_results_df, draft_df)
-friend_standings = create_friend_standings(draft_df, team_standings)
+pts_left = create_pts_left_df(final_results_df, draft_df)
+friend_standings = create_friend_standings(draft_df, team_standings, pts_left)
 
 # +
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])
@@ -253,6 +307,8 @@ app.layout = html.Div(className='dbc', children=[
 def table_shown(tab_chosen):
     if tab_chosen == 'game-results':
         table_df = final_results_df.iloc[:,:8]
+        table_df['round'] = table_df['round'].astype('int')
+        table_df.sort_values(by='round', ascending=False, inplace=True)
     else:
         table_df = team_standings
 
@@ -276,5 +332,5 @@ final_results_to_google = final_results_df.values.tolist()
 final_results_google.update(range_name='A2', values=final_results_to_google)
 
 if __name__ == '__main__':
-     app.run_server(debug=True)
-#    app.run_server(debug=True, port=8051)
+    app.run_server(debug=True)
+    # app.run_server(debug=True, port=8051)
