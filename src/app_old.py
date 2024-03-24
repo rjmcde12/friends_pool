@@ -191,7 +191,7 @@ def create_team_standings(final_results_df, draft_df):
     eliminated_teams = final_results_df.groupby('team')['result'].apply(lambda x: (x == 0).any())
     team_standings['eliminated'] = eliminated_teams
     team_standings = pd.merge(team_standings, draft_df, on='team')
-    team_standings = team_standings[['friend','team','seed','pool_points','eliminated']]
+    team_standings = team_standings[['friend','team','seed','pool_points','eliminated', 'overall']]
     team_standings.reset_index(drop=True, inplace=True)
     return team_standings
 
@@ -229,38 +229,56 @@ def create_pts_left_df(final_results_df, draft_df):
     for friend in friends_list:
         poss_pts = possible_points[possible_points['friend']==friend].reset_index(drop=True)
         poss_pts = poss_pts[poss_pts['eliminated']==False]
+        
         if len(poss_pts) != 0:
             max_round = poss_pts['round'].max()
-            rounds_left = list(range(max(max_round-1, 1), 7))
-            r1_pts = r2_pts = r3_pts = r4_pts = r5_pts = r6_pts = 0
-            for round in rounds_left:
-                if round == 1:
-                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-6])['r1'].max()
-                    r1_pts = poss_pts['r1'].sum()
-                elif round == 2:
-                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-4])['r2'].max()
-                    r2_pts = poss_pts['r2'].sum()
-                elif round == 3:
-                    rd_df = poss_pts.groupby(poss_pts['matchup_id'].str[:-2])['r3'].max()
-                    r3_pts = poss_pts['r3'].sum()
-                elif round == 4:
-                    rd_df = poss_pts.groupby(poss_pts['matchup_id'])['r4'].max()
-                    r4_pts = poss_pts['r4'].sum()
-                elif round == 5:
-                    rd_df = poss_pts.groupby(poss_pts['matchup_id'])['r5'].max()
-                    r5_pts = poss_pts['r5'].sum()
-                elif round == 6:
-                    r6_pts = poss_pts['r6'].max()
+            pre_tourney = poss_pts[poss_pts['round']=='']
+            pre_tourney_pts = pre_tourney['r1'].sum()
+            pre_tourney_pts = poss_pts_1 = poss_pts_2 = poss_pts_3 = poss_pts_4 = post_r5_pts = 0
+        
+            poss_pts_1 = poss_pts[poss_pts['round']==1]
+            if len(poss_pts_1) != 0:
+                rd_df = poss_pts_1.groupby(poss_pts_1['matchup_id'].str[1:])['r2'].max()
+                post_r1_pts = poss_pts_1['r2'].sum()
+            else:
+                post_r1_pts = 0
+        
+            poss_pts_2 = poss_pts[poss_pts['round']==2]
+            if len(poss_pts_2) != 0:
+                rd_df = poss_pts_2.groupby(poss_pts_2['matchup_id'].str[2:])['r3'].max()
+                post_r2_pts = poss_pts_2['r3'].sum()
+            else:
+                post_r2_pts = 0
+        
+            poss_pts_3 = poss_pts[poss_pts['round']==3]
+            if len(poss_pts_3) != 0:
+                rd_df = poss_pts_3.groupby(poss_pts_3['matchup_id'].str[3:])['r4'].max()
+                post_r3_pts = poss_pts_3['r4'].sum()
+            else:
+                post_r3_pts = 0
+        
+            poss_pts_4 = poss_pts[poss_pts['round']==4]
+            if len(poss_pts_4) != 0:
+                rd_df = poss_pts_4.groupby(poss_pts_4['matchup_id'].str[4:5])['r5'].max()
+                post_r4_pts = poss_pts_4['r5'].sum()
+            else:
+                post_r4_pts = 0
             
-            pts_left = r1_pts + r2_pts + r3_pts + r4_pts + r5_pts + r6_pts
+            poss_pts_5 = poss_pts[poss_pts['round']==5]
+            if len(poss_pts_5) != 0:
+                rd_df = poss_pts_5.groupby(poss_pts_5['matchup_id'].str[4:5])['r5'].max()
+                post_r5_pts = poss_pts_5['r6'].max()
+            else:
+                post_r5_pts = 0
+        
+            total_pts_left = pre_tourney_pts + post_r1_pts + post_r2_pts + post_r3_pts + post_r4_pts + post_r5_pts
             
-            pts_left_dict = {'friend':friend, 'pts_left':pts_left}
+            pts_left_dict = {'friend':friend, 'pts_left':total_pts_left}
             
-        pts_left_list.append(pts_left_dict)
+            pts_left_list.append(pts_left_dict)
             
     pts_left_df = pd.DataFrame(pts_left_list)
     return pts_left_df
-
 
 
 score_data = pull_today_scores()
@@ -306,22 +324,35 @@ app.layout = html.Div(className='dbc', children=[
 
 def table_shown(tab_chosen):
     if tab_chosen == 'game-results':
-        table_df = final_results_df.iloc[:,:8]
+        table_df = final_results_df
         table_df['round'] = table_df['round'].astype('int')
-        table_df.sort_values(by='round', ascending=False, inplace=True)
+        table_df = table_df.sort_values(by=['round' ,'game_id','result'], ascending=False)
+        table_df = table_df.iloc[:,:8]
+        table_df = table_df.rename(columns={'region':'Region','round':'Round','team':'Team','seed':'Seed',
+                                 'score':'Final Score','result':'Result','pool_points':'Pool Points'})
+        table_df = table_df.drop(columns='game_status')
+        table_df['Result'] = table_df['Result'].apply(lambda x: 'Win' if x == 1 else 'Loss') 
+
     else:
         table_df = team_standings
+        table_df['eliminated'] = table_df['eliminated'].apply(lambda x: 'Yes' if x == False else 'No')
+        table_df = table_df.sort_values(by='overall', ascending = True)
+        table_df = table_df.rename(columns={
+            'friend':'Friend*','team':'Team','seed':'Seed','pool_points':'Total Points',
+            'eliminated':'Active', 'overall':'Pick #'
+        })
 
     table_shown = dash_table.DataTable(
         id='table',
         columns=[{"name": i, "id": i} for i in table_df.columns],
         data=table_df.to_dict('records'),
-        page_size=15,
-        style_table={'overflowX': 'auto'},
+        page_size=16,
+        # style_table={'overflowX': 'auto'},
         style_data={'whiteSpace': 'normal', 'height': 'auto'},
-        filter_action='native',  # Enables column filtering
-        sort_action='native',    # Enables column sorting
-        sort_mode='multi'
+        filter_action='native',  
+        sort_action='native',    
+        sort_mode='multi',
+        **default_styles
     )
 
     return table_shown
