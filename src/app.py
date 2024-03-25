@@ -205,8 +205,8 @@ def create_friend_standings(draft_df, team_standings, pts_left):
     friend_standings['Teams Left'] = 8 - friend_standings['eliminated']
     friend_standings.drop(columns='eliminated', inplace=True)
     friend_standings.loc[:,'pool_points'] = friend_standings['pool_points'].astype(int)
-    friend_standings = pd.merge(friend_standings, pts_left, on='friend')
-    friend_standings['pts_left'] = friend_standings['pts_left'] + friend_standings['pool_points']
+    friend_standings = pd.merge(friend_standings, pts_left, on='friend', how='outer')
+    friend_standings['pts_left'] = friend_standings['pts_left'].fillna(0) + friend_standings['pool_points']
     friend_standings.sort_values(by=['pool_points', 'pts_left'], ascending=False, inplace=True)
     friend_standings.reset_index(drop=True, inplace=True)
     friend_standings.index = friend_standings.index + 1

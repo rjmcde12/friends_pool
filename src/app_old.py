@@ -281,12 +281,33 @@ def create_pts_left_df(final_results_df, draft_df):
     return pts_left_df
 
 
+def format_final_tables(team_standings, final_results_df):
+    formatted_team_standings = team_standings.copy()
+    formatted_team_standings['eliminated'] = formatted_team_standings['eliminated'].apply(lambda x: 'Yes' if x == False else 'No')
+    formatted_team_standings = formatted_team_standings.sort_values(by='overall', ascending = True)
+    formatted_team_standings = formatted_team_standings.rename(columns={
+        'friend':'Friend*','team':'Team','seed':'Seed','pool_points':'Total Points',
+        'eliminated':'Active', 'overall':'Pick #'
+    })
+    
+    formatted_final_results = final_results_df.copy()
+    formatted_final_results['round'] = formatted_final_results['round'].astype('int')
+    formatted_final_results = formatted_final_results.sort_values(by=['round' ,'game_id','result'], ascending=False)
+    formatted_final_results = formatted_final_results.iloc[:,:8]
+    formatted_final_results = formatted_final_results.rename(columns={'region':'Region','round':'Round','team':'Team','seed':'Seed',
+                                        'score':'Final Score','result':'Result','pool_points':'Pool Points'})
+    formatted_final_results['Result'] = formatted_final_results['Result'].apply(lambda x: 'Win' if x == 1 else 'Loss')
+    formatted_final_results = formatted_final_results.drop(columns='game_status')
+    return formatted_final_results, formatted_team_standings
+
+
 score_data = pull_today_scores()
 today_by_game_df, today_by_team_df = create_today_scores_dfs(score_data)
 final_results_df = update_final_results_df(today_by_team_df, final_results_df)
 team_standings = create_team_standings(final_results_df, draft_df)
 pts_left = create_pts_left_df(final_results_df, draft_df)
 friend_standings = create_friend_standings(draft_df, team_standings, pts_left)
+formatted_final_results, formatted_team_standings = format_final_tables(team_standings, final_results_df)
 
 # +
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])
@@ -324,23 +345,22 @@ app.layout = html.Div(className='dbc', children=[
 
 def table_shown(tab_chosen):
     if tab_chosen == 'game-results':
-        table_df = final_results_df
-        table_df['round'] = table_df['round'].astype('int')
-        table_df = table_df.sort_values(by=['round' ,'game_id','result'], ascending=False)
-        table_df = table_df.iloc[:,:8]
-        table_df = table_df.rename(columns={'region':'Region','round':'Round','team':'Team','seed':'Seed',
-                                 'score':'Final Score','result':'Result','pool_points':'Pool Points'})
-        table_df = table_df.drop(columns='game_status')
-        table_df['Result'] = table_df['Result'].apply(lambda x: 'Win' if x == 1 else 'Loss') 
+        table_df = formatted_final_results
+        # table_df['round'] = table_df['round'].astype('int')
+        # table_df = table_df.sort_values(by=['round' ,'game_id','result'], ascending=False)
+        # table_df = table_df.iloc[:,:8]
+        # table_df = table_df.rename(columns={'region':'Region','round':'Round','team':'Team','seed':'Seed',
+        #                          'score':'Final Score','result':'Result','pool_points':'Pool Points'})
+        # table_df = table_df.drop(columns='game_status')
 
     else:
-        table_df = team_standings
-        table_df['eliminated'] = table_df['eliminated'].apply(lambda x: 'Yes' if x == False else 'No')
-        table_df = table_df.sort_values(by='overall', ascending = True)
-        table_df = table_df.rename(columns={
-            'friend':'Friend*','team':'Team','seed':'Seed','pool_points':'Total Points',
-            'eliminated':'Active', 'overall':'Pick #'
-        })
+        table_df = formatted_team_standings
+        # table_df['eliminated'] = table_df['eliminated'].apply(lambda x: 'Yes' if x == False else 'No')
+        # table_df = table_df.sort_values(by='overall', ascending = True)
+        # table_df = table_df.rename(columns={
+        #     'friend':'Friend*','team':'Team','seed':'Seed','pool_points':'Total Points',
+        #     'eliminated':'Active', 'overall':'Pick #'
+        # })
 
     table_shown = dash_table.DataTable(
         id='table',
