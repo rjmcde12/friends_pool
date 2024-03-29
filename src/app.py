@@ -169,7 +169,7 @@ def update_final_results_df(today_by_team_df, final_results_df):
     final_results_df = final_results_df.copy()
     today_final_team_df = today_by_team_df[today_by_team_df['game_status'] == 'final']
     updated_final_results_df = today_final_team_df[~today_final_team_df['game_id'].isin(final_results_df['game_id'].tolist())]
-    round_map = {'First Round':1, 'Second Round':2, 'Sweet 16':3, 'Elite Eight':4, 'Final Four':5, 'Championship':6}
+    round_map = {'First Round':1, 'Second Round':2, 'Sweet 16&#174;':3, 'Elite Eight#174;':4, 'Final Four#174;':5, 'Championship':6}
     updated_final_results_df.loc[:,'round'] = updated_final_results_df['round'].map(round_map)
     updated_final_results_df.loc[:,'seed'] = updated_final_results_df['seed'].astype(int)
     updated_final_results_df.loc[:,'round'] = updated_final_results_df['round'].astype(int)
